@@ -12,7 +12,9 @@ const port = 3000;
 // Middleware configuration
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Create necessary directories
 const uploadDir = path.join(__dirname, 'uploads');
@@ -136,6 +138,11 @@ function getFileSizeMB(filePath) {
 }
 
 // API Routes
+
+// Explicit route for the root path to ensure index.html is served
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
