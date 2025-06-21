@@ -1,34 +1,20 @@
-# Use Node.js 18 Alpine as base image for smaller size
+# Use Node.js 18 Alpine for minimal size
 FROM node:18-alpine
-
-# Install necessary packages
-RUN apk add --no-cache git python3 make g++
-
-# Verify Node.js and npm are available
-RUN node --version && npm --version
-
-# Create app user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files first for better caching
+# Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Install production dependencies only, ignore scripts to avoid husky issues
+RUN npm ci --only=production --ignore-scripts
 
-# Copy application code
+# Copy source code
 COPY . .
 
-# Create necessary directories and set permissions
-RUN mkdir -p uploads output && \
-    chown -R nodejs:nodejs /app
-
-# Switch to non-root user
-USER nodejs
+# Create necessary directories
+RUN mkdir -p uploads output
 
 # Expose port
 EXPOSE 3000
