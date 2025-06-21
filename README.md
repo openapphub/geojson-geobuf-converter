@@ -67,6 +67,8 @@ npm run dev
 
 Visit http://localhost:3000 to use the application.
 
+![这是图片](/public/2025-06-21_17-23-21.jpg)
+
 ### 📁 Project Structure
 
 ```
