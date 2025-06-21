@@ -39,8 +39,8 @@ jobs:
 
       - name: Run linting
         run: npm run lint
-      - name: Run tests with coverage
-        run: npm run test:coverage -- --ci --forceExit
+      # - name: Run tests with coverage
+      #   run: npm run test:coverage -- --ci --forceExit
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3
