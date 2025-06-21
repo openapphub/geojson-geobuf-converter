@@ -67,6 +67,15 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix={{branch}}-
 
+      - name: Debug build context
+        run: |
+          echo "Checking Docker build context..."
+          ls -la
+          echo "Checking package.json..."
+          cat package.json | head -20
+          echo "Checking Dockerfile..."
+          cat Dockerfile | head -10
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -77,6 +86,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
 
   release:
     name: Update Release Notes

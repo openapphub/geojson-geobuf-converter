@@ -1,17 +1,11 @@
 # Use Node.js 18 Alpine as base image for smaller size
-FROM node:18-alpine AS builder
+FROM node:18-alpine
 
-# Set working directory
-WORKDIR /app
+# Install necessary packages
+RUN apk add --no-cache git python3 make g++
 
-# Copy package files
-COPY package*.json ./
-
-# Install all dependencies (including dev dependencies for potential build steps)
-RUN npm ci && npm cache clean --force
-
-# Production stage
-FROM node:18-alpine AS production
+# Verify Node.js and npm are available
+RUN node --version && npm --version
 
 # Create app user for security
 RUN addgroup -g 1001 -S nodejs && \
@@ -20,16 +14,16 @@ RUN addgroup -g 1001 -S nodejs && \
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files first for better caching
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --omit=dev && npm cache clean --force
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
 
 # Copy application code
 COPY . .
 
-# Create necessary directories
+# Create necessary directories and set permissions
 RUN mkdir -p uploads output && \
     chown -R nodejs:nodejs /app
 
