@@ -8,10 +8,10 @@ This guide explains how to deploy the GeoJSON to GeoBuf Converter using Docker a
 
 ```bash
 # Pull the latest image
-docker pull openapphub/geojson-geobuf-converter:latest
+docker pull ghcr.io/openapphub/geojson-geobuf-converter:latest
 
 # Run the container
-docker run -d -p 3000:3000 --name geojson-converter openapphub/geojson-geobuf-converter:latest
+docker run -d -p 3000:3000 --name geojson-converter ghcr.io/openapphub/geojson-geobuf-converter:latest
 ```
 
 ### Using GitHub Container Registry
@@ -32,7 +32,7 @@ Create a `docker-compose.yml` file:
 version: '3.8'
 services:
   geojson-converter:
-    image: openapphub/geojson-geobuf-converter:latest
+    image: ghcr.io/openapphub/geojson-geobuf-converter:latest
     container_name: geojson-converter
     ports:
       - '3000:3000'
