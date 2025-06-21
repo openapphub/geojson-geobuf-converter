@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoJSON to GeoBuf Converter - High Performance Map Data Compression Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .branding {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .branding a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .branding a:hover {
+            text-decoration: underline;
+        }
+
+        .powered-by {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 30px 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .upload-hint {
+            color: #999;
+            font-size: 14px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+            min-width: 150px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .file-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .file-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-area {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .result-area.error {
+            background: #ffeaea;
+            border-color: #ffb3b3;
+        }
+
+        .result-area h3 {
+            margin-bottom: 15px;
+        }
+
+        .result-area.error h3 {
+            color: #d32f2f;
+        }
+
+        .result-area:not(.error) h3 {
+            color: #2e7d32;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s;
+            animation: progress-animation 2s infinite;
+        }
+
+        @keyframes progress-animation {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            background: #f8f9ff;
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                padding: 10px 20px;
+            }
+
+            .upload-area {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ GeoJSON to GeoBuf Converter</h1>
+            <p>High-performance map data compression and decompression solution</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('compress')">Compress GeoJSON</button>
+            <button class="tab" onclick="switchTab('decompress')">Decompress GeoBuf</button>
+            <button class="tab" onclick="switchTab('info')">File Info</button>
+        </div>
+
+        <!-- Compress Tab -->
+        <div id="compress" class="tab-content active">
+            <div class="upload-area" onclick="document.getElementById('compressFile').click()">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Click to select GeoJSON file or drag and drop here</div>
+                <div class="upload-hint">Supports .json, .geojson formats</div>
+                <input type="file" id="compressFile" accept=".json,.geojson" onchange="handleFileSelect(this, 'compress')">
+            </div>
+            
+            <div class="file-info" id="compressFileInfo"></div>
+            <div class="progress-bar" id="compressProgress">
+                <div class="progress-fill"></div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" id="compressBtn" onclick="compressFile()" disabled>Start Compression</button>
+            </div>
+            
+            <div class="result-area" id="compressResult"></div>
+        </div>
+
+        <!-- Decompress Tab -->
+        <div id="decompress" class="tab-content">
+            <div class="upload-area" onclick="document.getElementById('decompressFile').click()">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Click to select GeoBuf file or drag and drop here</div>
+                <div class="upload-hint">Supports .pbf format</div>
+                <input type="file" id="decompressFile" accept=".pbf" onchange="handleFileSelect(this, 'decompress')">
+            </div>
+            
+            <div class="file-info" id="decompressFileInfo"></div>
+            <div class="progress-bar" id="decompressProgress">
+                <div class="progress-fill"></div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" id="decompressBtn" onclick="decompressFile()" disabled>Start Decompression</button>
+            </div>
+            
+            <div class="result-area" id="decompressResult"></div>
+        </div>
+
+        <!-- File Info Tab -->
+        <div id="info" class="tab-content">
+            <div class="upload-area" onclick="document.getElementById('infoFile').click()">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Click to select file or drag and drop here</div>
+                <div class="upload-hint">Supports .json, .geojson, .pbf formats</div>
+                <input type="file" id="infoFile" accept=".json,.geojson,.pbf" onchange="handleFileSelect(this, 'info')">
+            </div>
+            
+            <div class="file-info" id="infoFileInfo"></div>
+            <div class="progress-bar" id="infoProgress">
+                <div class="progress-fill"></div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" id="infoBtn" onclick="getFileInfo()" disabled>Get Info</button>
+            </div>
+            
+            <div class="result-area" id="infoResult"></div>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🗜️</div>
+                <h3>Efficient Compression</h3>
+                <p>Using GeoBuf format, GeoJSON files can be compressed to 60-80% of original size, significantly improving transmission efficiency</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Fast Processing</h3>
+                <p>Based on high-performance pbf encoding library, processing speed far exceeds traditional JSON methods</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔄</div>
+                <h3>Bidirectional Conversion</h3>
+                <p>Supports GeoJSON to GeoBuf compression and GeoBuf to GeoJSON decompression</p>
+            </div>
+        </div>
+
+        <!-- Branding Section -->
+        <div class="branding">
+            <div>
+                <a href="https://github.com/openapphub" target="_blank" rel="noopener noreferrer">
+                    🚀 Made with ❤️ by OpenAppHub
+                </a>
+            </div>
+            <div class="powered-by">
+                Powered by Node.js, Express, and GeoBuf
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFile = null;
+        let currentTab = 'compress';
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active state from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Activate selected tab
+            event.target.classList.add('active');
+            
+            currentTab = tabName;
+            resetUI();
+        }
+
+        // Reset UI state
+        function resetUI() {
+            currentFile = null;
+            
+            // Hide all file info and results
+            document.querySelectorAll('.file-info, .result-area, .progress-bar').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Disable all buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // Clear file inputs
+            document.querySelectorAll('input[type="file"]').forEach(input => {
+                input.value = '';
+            });
+        }
+
+        // File selection handling
+        function handleFileSelect(input, type) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            currentFile = file;
+            
+            // Show file info
+            const fileInfoEl = document.getElementById(type + 'FileInfo');
+            fileInfoEl.innerHTML = `
+                <h3>📄 File Information</h3>
+                <div class="info-item">
+                    <span>Filename:</span>
+                    <span>${file.name}</span>
+                </div>
+                <div class="info-item">
+                    <span>File Size:</span>
+                    <span>${(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                </div>
+                <div class="info-item">
+                    <span>File Type:</span>
+                    <span>${file.type || 'Unknown'}</span>
+                </div>
+            `;
+            fileInfoEl.style.display = 'block';
+            
+            // Enable corresponding button
+            document.getElementById(type + 'Btn').disabled = false;
+        }
+
+        // Drag and drop functionality
+        document.querySelectorAll('.upload-area').forEach(area => {
+            area.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                area.classList.add('dragover');
+            });
+            
+            area.addEventListener('dragleave', () => {
+                area.classList.remove('dragover');
+            });
+            
+            area.addEventListener('drop', (e) => {
+                e.preventDefault();
+                area.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const fileInput = area.querySelector('input[type="file"]');
+                    fileInput.files = files;
+                    handleFileSelect(fileInput, currentTab);
+                }
+            });
+        });
+
+        // Show progress bar
+        function showProgress(type) {
+            const progressEl = document.getElementById(type + 'Progress');
+            progressEl.style.display = 'block';
+        }
+
+        // Hide progress bar
+        function hideProgress(type) {
+            const progressEl = document.getElementById(type + 'Progress');
+            progressEl.style.display = 'none';
+        }
+
+        // Show result
+        function showResult(type, result, isError = false) {
+            const resultEl = document.getElementById(type + 'Result');
+            resultEl.className = 'result-area' + (isError ? ' error' : '');
+            
+            if (isError) {
+                resultEl.innerHTML = `
+                    <h3>❌ Processing Failed</h3>
+                    <p>${result}</p>
+                `;
+            } else {
+                let content = `<h3>✅ ${result.message}</h3>`;
+                
+                if (result.originalSize) {
+                    content += `
+                        <div class="info-item">
+                            <span>Original Size:</span>
+                            <span>${result.originalSize}</span>
+                        </div>
+                    `;
+                }
+                
+                if (result.compressedSize) {
+                    content += `
+                        <div class="info-item">
+                            <span>Compressed Size:</span>
+                            <span>${result.compressedSize}</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Compression Ratio:</span>
+                            <span>${result.compressionRatio}</span>
+                        </div>
+                    `;
+                }
+                
+                if (result.decompressedSize) {
+                    content += `
+                        <div class="info-item">
+                            <span>Decompressed Size:</span>
+                            <span>${result.decompressedSize}</span>
+                        </div>
+                    `;
+                }
+                
+                if (result.features !== undefined) {
+                    content += `
+                        <div class="info-item">
+                            <span>Feature Count:</span>
+                            <span>${result.features}</span>
+                        </div>
+                    `;
+                }
+                
+                if (result.downloadUrl) {
+                    content += `
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button class="btn" onclick="downloadFile('${result.downloadUrl}')">📥 Download File</button>
+                        </div>
+                    `;
+                }
+                
+                resultEl.innerHTML = content;
+            }
+            
+            resultEl.style.display = 'block';
+        }
+
+        // Compress file
+        async function compressFile() {
+            if (!currentFile) return;
+            
+            const formData = new FormData();
+            formData.append('file', currentFile);
+            
+            showProgress('compress');
+            document.getElementById('compressBtn').disabled = true;
+            
+            try {
+                const response = await fetch('/api/compress', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResult('compress', result);
+                } else {
+                    showResult('compress', result.error, true);
+                }
+            } catch (error) {
+                showResult('compress', 'Network error: ' + error.message, true);
+            } finally {
+                hideProgress('compress');
+                document.getElementById('compressBtn').disabled = false;
+            }
+        }
+
+        // Decompress file
+        async function decompressFile() {
+            if (!currentFile) return;
+            
+            const formData = new FormData();
+            formData.append('file', currentFile);
+            
+            showProgress('decompress');
+            document.getElementById('decompressBtn').disabled = true;
+            
+            try {
+                const response = await fetch('/api/decompress', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResult('decompress', result);
+                } else {
+                    showResult('decompress', result.error, true);
+                }
+            } catch (error) {
+                showResult('decompress', 'Network error: ' + error.message, true);
+            } finally {
+                hideProgress('decompress');
+                document.getElementById('decompressBtn').disabled = false;
+            }
+        }
+
+        // Get file information
+        async function getFileInfo() {
+            if (!currentFile) return;
+            
+            const formData = new FormData();
+            formData.append('file', currentFile);
+            
+            showProgress('info');
+            document.getElementById('infoBtn').disabled = true;
+            
+            try {
+                const response = await fetch('/api/info', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.filename) {
+                    showResult('info', result);
+                } else {
+                    showResult('info', result.error, true);
+                }
+            } catch (error) {
+                showResult('info', 'Network error: ' + error.message, true);
+            } finally {
+                hideProgress('info');
+                document.getElementById('infoBtn').disabled = false;
+            }
+        }
+
+        // Download file
+        function downloadFile(url) {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = '';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html> 
