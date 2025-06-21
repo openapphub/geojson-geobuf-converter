@@ -42,7 +42,7 @@ A high-performance GeoJSON to GeoBuf compression and decompression tool with a m
 
 ```bash
 # Pull and run with Docker
-docker run -d -p 3000:3000 --name geojson-converter openapphub/geojson-geobuf-converter
+docker run -d -p 3000:3000 --name geojson-converter ghcr.io/openapphub/geojson-geobuf-converter:latest
 
 # Or build and run locally
 git clone https://github.com/openapphub/geojson-geobuf-converter.git
@@ -260,7 +260,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ```bash
 # 拉取并运行Docker镜像
-docker run -d -p 3000:3000 --name geojson-converter openapphub/geojson-geobuf-converter
+docker run -d -p 3000:3000 --name geojson-converter ghcr.io/openapphub/geojson-geobuf-converter:latest
 
 # 或者本地构建运行
 git clone https://github.com/openapphub/geojson-geobuf-converter.git
