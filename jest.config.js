@@ -9,15 +9,9 @@ module.exports = {
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html'],
-  testMatch: [
-    '**/test/**/*.test.js',
-    '**/*.test.js',
-  ],
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/coverage/',
-  ],
+  testMatch: ['**/test/**/*.test.js', '**/*.test.js'],
+  testPathIgnorePatterns: ['/node_modules/', '/coverage/'],
   setupFilesAfterEnv: ['<rootDir>/test/setup.js'],
   verbose: true,
   testTimeout: 10000,
-}; 
+};

@@ -48,17 +48,20 @@ This project and everyone participating in it is governed by our [Code of Conduc
 ## Development Setup
 
 1. **Fork and clone the repository**
+
    ```bash
    git clone https://github.com/your-username/geojson-geobuf-converter.git
    cd geojson-geobuf-converter
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up pre-commit hooks**
+
    ```bash
    npm run prepare
    ```
@@ -71,17 +74,20 @@ This project and everyone participating in it is governed by our [Code of Conduc
 ## Pull Request Process
 
 1. **Create a feature branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 2. **Make your changes**
+
    - Write clean, well-documented code
    - Follow the existing code style
    - Add tests for new functionality
    - Update documentation if needed
 
 3. **Run quality checks**
+
    ```bash
    npm run lint
    npm run format:check
@@ -90,12 +96,14 @@ This project and everyone participating in it is governed by our [Code of Conduc
    ```
 
 4. **Commit your changes**
+
    ```bash
    git add .
    git commit -m "feat: add your feature description"
    ```
 
 5. **Push to your fork**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -209,4 +217,4 @@ Contributors will be recognized in:
 - Release notes
 - GitHub contributors list
 
-Thank you for contributing to the GeoJSON to GeoBuf Converter project! 
+Thank you for contributing to the GeoJSON to GeoBuf Converter project!

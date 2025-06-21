@@ -35,7 +35,7 @@ services:
     image: openapphub/geojson-geobuf-converter:latest
     container_name: geojson-converter
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - ./uploads:/app/uploads
       - ./output:/app/output
@@ -43,7 +43,7 @@ services:
     environment:
       - NODE_ENV=production
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -51,6 +51,7 @@ services:
 ```
 
 Run with:
+
 ```bash
 docker-compose up -d
 ```
@@ -71,9 +72,9 @@ docker run -d -p 3000:3000 --name geojson-converter geojson-converter
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3000` | Server port |
+| Variable   | Default      | Description      |
+| ---------- | ------------ | ---------------- |
+| `PORT`     | `3000`       | Server port      |
 | `NODE_ENV` | `production` | Environment mode |
 
 ## Volume Mounts
@@ -145,6 +146,7 @@ docker push openapphub/geojson-geobuf-converter:v1.0.0
 ## Multi-Architecture Builds
 
 The GitHub Actions workflow builds multi-architecture images for:
+
 - linux/amd64
 - linux/arm64
 
@@ -199,7 +201,7 @@ services:
     image: openapphub/geojson-geobuf-converter:latest
     container_name: geojson-converter
     expose:
-      - "3000"
+      - '3000'
     volumes:
       - ./uploads:/app/uploads
       - ./output:/app/output
@@ -211,8 +213,8 @@ services:
     image: nginx:alpine
     container_name: nginx-proxy
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./ssl:/etc/nginx/ssl
@@ -229,6 +231,7 @@ networks:
 ## Support
 
 For Docker-related issues:
+
 - Check the [GitHub Issues](https://github.com/openapphub/geojson-geobuf-converter/issues)
 - Review the [Docker documentation](https://docs.docker.com/)
-- Contact the maintainers 
+- Contact the maintainers

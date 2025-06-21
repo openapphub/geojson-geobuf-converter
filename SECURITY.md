@@ -84,4 +84,4 @@ For security-related questions or concerns:
 - Email: [security@openapphub.com](mailto:security@openapphub.com)
 - PGP Key: [security-pgp-key.asc](https://github.com/openapphub/geojson-geobuf-converter/raw/main/security-pgp-key.asc)
 
-Thank you for helping keep GeoJSON to GeoBuf Converter secure! 
+Thank you for helping keep GeoJSON to GeoBuf Converter secure!

@@ -88,6 +88,7 @@ geojson-geobuf-converter/
 ### 🔌 API Endpoints
 
 #### Compress GeoJSON
+
 - **URL**: `/api/compress`
 - **Method**: POST
 - **Content-Type**: multipart/form-data
@@ -95,6 +96,7 @@ geojson-geobuf-converter/
 - **Response**: Compression result and download link
 
 #### Decompress GeoBuf
+
 - **URL**: `/api/decompress`
 - **Method**: POST
 - **Content-Type**: multipart/form-data
@@ -102,6 +104,7 @@ geojson-geobuf-converter/
 - **Response**: Decompression result and download link
 
 #### Get File Information
+
 - **URL**: `/api/info`
 - **Method**: POST
 - **Content-Type**: multipart/form-data
@@ -109,6 +112,7 @@ geojson-geobuf-converter/
 - **Response**: Detailed file information
 
 #### Download File
+
 - **URL**: `/api/download/:filename`
 - **Method**: GET
 - **Response**: File download
@@ -116,12 +120,14 @@ geojson-geobuf-converter/
 ### 📖 Usage Guide
 
 1. **Compress GeoJSON Files**:
+
    - Select the "Compress GeoJSON" tab
    - Upload a .json or .geojson file
    - Click "Start Compression"
    - Download the compressed .pbf file
 
 2. **Decompress GeoBuf Files**:
+
    - Select the "Decompress GeoBuf" tab
    - Upload a .pbf file
    - Click "Start Decompression"
@@ -141,6 +147,7 @@ geojson-geobuf-converter/
 ### 📊 Performance
 
 Based on testing, GeoBuf format compared to GeoJSON achieves:
+
 - 60-80% reduction in file size
 - 3-5x faster parsing speed
 - Significantly reduced network transmission time
@@ -165,7 +172,7 @@ services:
     image: openapphub/geojson-geobuf-converter:latest
     container_name: geojson-converter
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - ./uploads:/app/uploads
       - ./output:/app/output
@@ -175,6 +182,7 @@ services:
 ```
 
 Run with:
+
 ```bash
 docker-compose up -d
 ```
@@ -298,6 +306,7 @@ geojson-geobuf-converter/
 ### 🔌 API接口
 
 #### 压缩GeoJSON
+
 - **URL**: `/api/compress`
 - **Method**: POST
 - **Content-Type**: multipart/form-data
@@ -305,6 +314,7 @@ geojson-geobuf-converter/
 - **返回**: 压缩结果和下载链接
 
 #### 解压GeoBuf
+
 - **URL**: `/api/decompress`
 - **Method**: POST
 - **Content-Type**: multipart/form-data
@@ -312,6 +322,7 @@ geojson-geobuf-converter/
 - **返回**: 解压结果和下载链接
 
 #### 获取文件信息
+
 - **URL**: `/api/info`
 - **Method**: POST
 - **Content-Type**: multipart/form-data
@@ -319,6 +330,7 @@ geojson-geobuf-converter/
 - **返回**: 文件详细信息
 
 #### 下载文件
+
 - **URL**: `/api/download/:filename`
 - **Method**: GET
 - **返回**: 文件下载
@@ -326,12 +338,14 @@ geojson-geobuf-converter/
 ### 📖 使用指南
 
 1. **压缩GeoJSON文件**:
+
    - 选择"压缩GeoJSON"标签页
    - 上传.json或.geojson文件
    - 点击"开始压缩"
    - 下载压缩后的.pbf文件
 
 2. **解压GeoBuf文件**:
+
    - 选择"解压GeoBuf"标签页
    - 上传.pbf文件
    - 点击"开始解压"
@@ -351,6 +365,7 @@ geojson-geobuf-converter/
 ### 📊 性能表现
 
 根据测试，GeoBuf格式相比GeoJSON可以达到：
+
 - 文件大小减少60-80%
 - 解析速度提升3-5倍
 - 网络传输时间显著减少
@@ -375,7 +390,7 @@ services:
     image: openapphub/geojson-geobuf-converter:latest
     container_name: geojson-converter
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - ./uploads:/app/uploads
       - ./output:/app/output
@@ -385,6 +400,7 @@ services:
 ```
 
 运行命令：
+
 ```bash
 docker-compose up -d
 ```
@@ -443,4 +459,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [![GitHub issues](https://img.shields.io/github/issues/openapphub/geojson-geobuf-converter)](https://github.com/openapphub/geojson-geobuf-converter/issues)
 [![GitHub license](https://img.shields.io/github/license/openapphub/geojson-geobuf-converter)](https://github.com/openapphub/geojson-geobuf-converter/blob/main/LICENSE)
 
-</div> 
+</div>

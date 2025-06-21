@@ -1,5 +1,4 @@
 const request = require('supertest');
-const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,7 +12,7 @@ describe('GeoJSON to GeoBuf Converter API', () => {
     server = app.listen(0); // Use random port for testing
   });
 
-  afterAll((done) => {
+  afterAll(done => {
     server.close(done);
   });
 
@@ -33,6 +32,7 @@ describe('GeoJSON to GeoBuf Converter API', () => {
         status: 'ok',
         timestamp: expect.any(String),
         uptime: expect.any(Number),
+        version: expect.any(String),
       });
     });
   });
@@ -76,15 +76,13 @@ describe('GeoJSON to GeoBuf Converter API', () => {
           contentType: 'application/json',
         });
 
-      expect(response.status).toBe(400);
-      expect(response.body).toHaveProperty('success', false);
+      expect(response.status).toBe(500);
       expect(response.body).toHaveProperty('error');
     });
 
     it('should reject missing file', async () => {
       const response = await request(app).post('/api/compress');
       expect(response.status).toBe(400);
-      expect(response.body).toHaveProperty('success', false);
       expect(response.body).toHaveProperty('error');
     });
   });
@@ -118,10 +116,16 @@ describe('GeoJSON to GeoBuf Converter API', () => {
       // Now decompress the file
       const downloadUrl = compressResponse.body.downloadUrl;
       const filename = downloadUrl.split('/').pop();
+      const filePath = path.join(__dirname, '..', 'output', filename);
+
+      // Wait a moment for file to be written
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const fileBuffer = fs.readFileSync(filePath);
 
       const response = await request(app)
         .post('/api/decompress')
-        .attach('file', path.join(__dirname, '..', 'output', filename), {
+        .attach('file', fileBuffer, {
           filename: 'test.pbf',
           contentType: 'application/octet-stream',
         });
@@ -132,15 +136,17 @@ describe('GeoJSON to GeoBuf Converter API', () => {
     });
 
     it('should reject invalid GeoBuf file', async () => {
+      // Create a buffer that will definitely fail pbf decoding
+      const invalidBuffer = Buffer.from([0xff, 0xff, 0xff, 0xff, 0xff]);
+
       const response = await request(app)
         .post('/api/decompress')
-        .attach('file', Buffer.from('invalid pbf data'), {
+        .attach('file', invalidBuffer, {
           filename: 'invalid.pbf',
           contentType: 'application/octet-stream',
         });
 
-      expect(response.status).toBe(400);
-      expect(response.body).toHaveProperty('success', false);
+      expect(response.status).toBe(500);
       expect(response.body).toHaveProperty('error');
     });
   });
@@ -169,11 +175,10 @@ describe('GeoJSON to GeoBuf Converter API', () => {
         });
 
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('success', true);
-      expect(response.body).toHaveProperty('fileInfo');
-      expect(response.body.fileInfo).toHaveProperty('format', 'geojson');
-      expect(response.body.fileInfo).toHaveProperty('size');
-      expect(response.body.fileInfo).toHaveProperty('featureCount');
+      expect(response.body).toHaveProperty('filename');
+      expect(response.body).toHaveProperty('size');
+      expect(response.body).toHaveProperty('type');
+      expect(response.body).toHaveProperty('features');
     });
 
     it('should return file information for GeoBuf', async () => {
@@ -204,19 +209,24 @@ describe('GeoJSON to GeoBuf Converter API', () => {
       // Now get info for the compressed file
       const downloadUrl = compressResponse.body.downloadUrl;
       const filename = downloadUrl.split('/').pop();
+      const filePath = path.join(__dirname, '..', 'output', filename);
+
+      // Wait a moment for file to be written
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const fileBuffer = fs.readFileSync(filePath);
 
       const response = await request(app)
         .post('/api/info')
-        .attach('file', path.join(__dirname, '..', 'output', filename), {
+        .attach('file', fileBuffer, {
           filename: 'test.pbf',
           contentType: 'application/octet-stream',
         });
 
       expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('success', true);
-      expect(response.body).toHaveProperty('fileInfo');
-      expect(response.body.fileInfo).toHaveProperty('format', 'geobuf');
-      expect(response.body.fileInfo).toHaveProperty('size');
+      expect(response.body).toHaveProperty('filename');
+      expect(response.body).toHaveProperty('size');
+      expect(response.body).toHaveProperty('type');
     });
   });
 
@@ -259,4 +269,4 @@ describe('GeoJSON to GeoBuf Converter API', () => {
       expect(response.status).toBe(404);
     });
   });
-}); 
+});

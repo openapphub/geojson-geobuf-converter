@@ -3,33 +3,33 @@
 
 badges:
   # Status badges
-  github_release: "https://img.shields.io/github/v/release/openapphub/geojson-geobuf-converter"
-  github_license: "https://img.shields.io/github/license/openapphub/geojson-geobuf-converter"
-  github_stars: "https://img.shields.io/github/stars/openapphub/geojson-geobuf-converter?style=social"
-  github_forks: "https://img.shields.io/github/forks/openapphub/geojson-geobuf-converter?style=social"
-  
+  github_release: 'https://img.shields.io/github/v/release/openapphub/geojson-geobuf-converter'
+  github_license: 'https://img.shields.io/github/license/openapphub/geojson-geobuf-converter'
+  github_stars: 'https://img.shields.io/github/stars/openapphub/geojson-geobuf-converter?style=social'
+  github_forks: 'https://img.shields.io/github/forks/openapphub/geojson-geobuf-converter?style=social'
+
   # Docker badges
-  docker_pulls: "https://img.shields.io/docker/pulls/openapphub/geojson-geobuf-converter"
-  docker_size: "https://img.shields.io/docker/image-size/openapphub/geojson-geobuf-converter/latest"
-  
+  docker_pulls: 'https://img.shields.io/docker/pulls/openapphub/geojson-geobuf-converter'
+  docker_size: 'https://img.shields.io/docker/image-size/openapphub/geojson-geobuf-converter/latest'
+
   # CI/CD badges
-  ci_cd: "https://github.com/openapphub/geojson-geobuf-converter/workflows/CI/CD%20Pipeline/badge.svg"
-  dependency_review: "https://github.com/openapphub/geojson-geobuf-converter/workflows/Dependency%20Review/badge.svg"
-  
+  ci_cd: 'https://github.com/openapphub/geojson-geobuf-converter/workflows/CI/CD%20Pipeline/badge.svg'
+  dependency_review: 'https://github.com/openapphub/geojson-geobuf-converter/workflows/Dependency%20Review/badge.svg'
+
   # Quality badges
-  test_coverage: "https://img.shields.io/codecov/c/github/openapphub/geojson-geobuf-converter"
-  code_quality: "https://img.shields.io/lgtm/grade/javascript/g/openapphub/geojson-geobuf-converter.svg"
-  
+  test_coverage: 'https://img.shields.io/codecov/c/github/openapphub/geojson-geobuf-converter'
+  code_quality: 'https://img.shields.io/lgtm/grade/javascript/g/openapphub/geojson-geobuf-converter.svg'
+
   # Community badges
-  contributors: "https://img.shields.io/github/contributors/openapphub/geojson-geobuf-converter"
-  issues: "https://img.shields.io/github/issues/openapphub/geojson-geobuf-converter"
-  prs_welcome: "https://img.shields.io/badge/PRs-welcome-brightgreen.svg"
-  
+  contributors: 'https://img.shields.io/github/contributors/openapphub/geojson-geobuf-converter'
+  issues: 'https://img.shields.io/github/issues/openapphub/geojson-geobuf-converter'
+  prs_welcome: 'https://img.shields.io/badge/PRs-welcome-brightgreen.svg'
+
   # Version badges
-  node_version: "https://img.shields.io/node/v/geojson-geobuf-converter"
-  npm_version: "https://img.shields.io/npm/v/geojson-geobuf-converter"
-  
+  node_version: 'https://img.shields.io/node/v/geojson-geobuf-converter'
+  npm_version: 'https://img.shields.io/npm/v/geojson-geobuf-converter'
+
   # Platform badges
-  platform_linux: "https://img.shields.io/badge/platform-linux-lightgrey"
-  platform_macos: "https://img.shields.io/badge/platform-macos-lightgrey"
-  platform_windows: "https://img.shields.io/badge/platform-windows-lightgrey" 
+  platform_linux: 'https://img.shields.io/badge/platform-linux-lightgrey'
+  platform_macos: 'https://img.shields.io/badge/platform-macos-lightgrey'
+  platform_windows: 'https://img.shields.io/badge/platform-windows-lightgrey'

@@ -22,7 +22,8 @@ Add any other context or screenshots about the feature request here.
 Please describe a specific use case where this feature would be helpful.
 
 **Priority**
+
 - [ ] Low
 - [ ] Medium
 - [ ] High
-- [ ] Critical 
+- [ ] Critical

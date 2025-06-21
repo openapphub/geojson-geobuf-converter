@@ -2,7 +2,7 @@ name: Dependency Review
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 permissions:
   contents: read
@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Dependency Review
         uses: actions/dependency-review-action@v3
         with:
-          fail-on-severity: moderate 
+          fail-on-severity: moderate

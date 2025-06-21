@@ -5,6 +5,7 @@ This document summarizes all the improvements made to prepare this project for o
 ## 🚀 What's Been Added
 
 ### 1. **GitHub Actions CI/CD Pipeline**
+
 - **File**: `.github/workflows/ci.yml`
 - **Features**:
   - Automated testing on multiple Node.js versions (16.x, 18.x, 20.x)
@@ -15,6 +16,7 @@ This document summarizes all the improvements made to prepare this project for o
   - Automatic Docker image publishing to GitHub Container Registry
 
 ### 2. **Docker Hub Integration**
+
 - **File**: `.github/workflows/docker-hub.yml`
 - **Features**:
   - Automated Docker image publishing to Docker Hub
@@ -23,6 +25,7 @@ This document summarizes all the improvements made to prepare this project for o
   - Release-based triggers
 
 ### 3. **Code Quality Tools**
+
 - **Files**: `.eslintrc.js`, `.prettierrc`
 - **Features**:
   - ESLint configuration for code quality
@@ -31,6 +34,7 @@ This document summarizes all the improvements made to prepare this project for o
   - Lint-staged for staged files only
 
 ### 4. **Testing Infrastructure**
+
 - **Files**: `jest.config.js`, `test/setup.js`, `test/index.test.js`
 - **Features**:
   - Comprehensive test suite
@@ -40,6 +44,7 @@ This document summarizes all the improvements made to prepare this project for o
   - Test cleanup automation
 
 ### 5. **Documentation**
+
 - **Files**: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CHANGELOG.md`
 - **Features**:
   - Contributing guidelines
@@ -48,7 +53,8 @@ This document summarizes all the improvements made to prepare this project for o
   - Changelog following Keep a Changelog format
 
 ### 6. **GitHub Templates**
-- **Files**: 
+
+- **Files**:
   - `.github/ISSUE_TEMPLATE/bug_report.md`
   - `.github/ISSUE_TEMPLATE/feature_request.md`
   - `.github/pull_request_template.md`
@@ -58,6 +64,7 @@ This document summarizes all the improvements made to prepare this project for o
   - Pull request guidelines
 
 ### 7. **Project Configuration**
+
 - **Files**: `package.json` (enhanced), `.github/FUNDING.yml`, `.github/badges.yml`
 - **Features**:
   - Enhanced package.json with proper metadata
@@ -65,6 +72,7 @@ This document summarizes all the improvements made to prepare this project for o
   - Badge reference configuration
 
 ### 8. **Docker Documentation**
+
 - **File**: `docs/DOCKER_DEPLOYMENT.md`
 - **Features**:
   - Comprehensive Docker deployment guide
@@ -76,14 +84,17 @@ This document summarizes all the improvements made to prepare this project for o
 ### For Repository Owners
 
 1. **Enable GitHub Actions**
+
    - Go to repository Settings → Actions → General
    - Enable "Allow all actions and reusable workflows"
 
 2. **Set up Docker Hub Secrets** (Optional)
+
    - Go to repository Settings → Secrets and variables → Actions
    - Add `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`
 
 3. **Enable GitHub Container Registry**
+
    - Go to repository Settings → Packages
    - Ensure "Inherit access from source repository" is enabled
 
@@ -98,17 +109,20 @@ This document summarizes all the improvements made to prepare this project for o
 
 1. **Fork the repository**
 2. **Clone your fork**
+
    ```bash
    git clone https://github.com/your-username/geojson-geobuf-converter.git
    cd geojson-geobuf-converter
    ```
 
 3. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 4. **Set up pre-commit hooks**
+
    ```bash
    npm run prepare
    ```
@@ -121,11 +135,13 @@ This document summarizes all the improvements made to prepare this project for o
 ## 📊 CI/CD Pipeline Overview
 
 ### Workflow Triggers
+
 - **Push to main/develop**: Runs tests and builds Docker images
 - **Pull requests**: Runs tests and code quality checks
 - **Releases**: Creates GitHub releases and publishes to Docker Hub
 
 ### Jobs
+
 1. **Test and Lint**: Multi-version Node.js testing
 2. **Build and Push**: Docker image building and publishing
 3. **Release**: GitHub release creation
@@ -134,11 +150,13 @@ This document summarizes all the improvements made to prepare this project for o
 ## 🐳 Docker Publishing
 
 ### GitHub Container Registry
+
 - **Automatic**: On every push to main branch
 - **URL**: `ghcr.io/openapphub/geojson-geobuf-converter`
 - **Tags**: `latest`, `main`, `v*` (semantic versions)
 
 ### Docker Hub
+
 - **Trigger**: On release creation
 - **URL**: `openapphub/geojson-geobuf-converter`
 - **Tags**: `latest`, `v*` (semantic versions)
@@ -162,15 +180,18 @@ This document summarizes all the improvements made to prepare this project for o
 ## 🎯 Next Steps
 
 1. **Publish to npm** (if desired)
+
    ```bash
    npm publish
    ```
 
 2. **Set up monitoring**
+
    - Add application monitoring (e.g., Sentry)
    - Set up uptime monitoring
 
 3. **Community engagement**
+
    - Enable GitHub Discussions
    - Set up community guidelines
    - Create contribution rewards
@@ -183,10 +204,11 @@ This document summarizes all the improvements made to prepare this project for o
 ## 📞 Support
 
 For questions about the open source setup:
+
 - Create a GitHub issue
 - Start a GitHub discussion
 - Contact the maintainers
 
 ---
 
-**Note**: This setup follows industry best practices for open source projects and provides a solid foundation for community collaboration and project growth. 
+**Note**: This setup follows industry best practices for open source projects and provides a solid foundation for community collaboration and project growth.
